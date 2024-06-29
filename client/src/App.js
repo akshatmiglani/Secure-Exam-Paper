@@ -6,6 +6,9 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import ExaminerDashboard from './components/examiner/ExaminerDashboard';
 import InvigilatorDashboard from './components/invigilator/InvigilatorDashboard';
 import PrivateRoute from './components/PrivateRoute'; 
+import DownloadFile from './components/papers/DownloadFile';
+import UpdateFile from './components/papers/UpdateFile';
+import UploadFile from './components/papers/UploadFile';
 
 const App = () => {
   return (
@@ -26,6 +29,9 @@ const App = () => {
           path="/invigilator"
           element={<PrivateRoute element={InvigilatorDashboard} roles={['invigilator']} />}
         />
+        <Route path="/upload" element={<UploadFile />} />
+        <Route path="/download/:id/version/:versionId" element={<DownloadFile />} />
+        <Route path="/update/:id" element={<UpdateFile />} />
       </Routes>
     </Router>
   );
