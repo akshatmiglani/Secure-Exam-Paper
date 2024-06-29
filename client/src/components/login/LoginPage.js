@@ -10,15 +10,16 @@ const LoginPage = () => {
     username: '',
     password: '',
     role: 'admin' 
+
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -29,20 +30,20 @@ const LoginPage = () => {
       toast.success('Login successfully!');
       localStorage.setItem('token', response.data.token);
       switch (formData.role) {
-        case 'admin':
-          navigate('/admin');
+        case "admin":
+          navigate("/admin");
           break;
-        case 'examiner':
-          navigate('/examiner');
+        case "examiner":
+          navigate("/examiner");
           break;
-        case 'invigilator':
-          navigate('/invigilator');
+        case "invigilator":
+          navigate("/invigilator");
           break;
         default:
-          navigate('/');
+          navigate("/");
       }
     } catch (error) {
-      setError('Invalid username, password, or role');
+      setError("Invalid username, password, or role");
     }
   };
 
@@ -55,7 +56,9 @@ const LoginPage = () => {
         {error && <p className="text-red-600 text-center">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-700">Username</label>
+            <label htmlFor="username" className="block text-gray-700">
+              Username
+            </label>
             <input
               type="text"
               id="username"
@@ -67,7 +70,9 @@ const LoginPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -79,7 +84,9 @@ const LoginPage = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="role" className="block text-gray-700">Role</label>
+            <label htmlFor="role" className="block text-gray-700">
+              Role
+            </label>
             <select
               id="role"
               name="role"

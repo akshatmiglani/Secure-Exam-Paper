@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import DownloadFile from './components/papers/DownloadFile';
 import UpdateFile from './components/papers/UpdateFile';
 import UploadFile from './components/papers/UploadFile';
+import PapersList from './components/papers/PapersList';
 
 const App = () => {
   return (
@@ -32,6 +33,8 @@ const App = () => {
         <Route path="/upload" element={<UploadFile />} />
         <Route path="/download/:id/version/:versionId" element={<DownloadFile />} />
         <Route path="/update/:id" element={<UpdateFile />} />
+        <Route path="/all" element={<PapersList />} />
+
       </Routes>
     </Router>
   );

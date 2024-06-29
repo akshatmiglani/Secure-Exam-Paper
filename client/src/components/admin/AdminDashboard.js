@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar';
@@ -10,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState("tab1");
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -19,13 +20,19 @@ const AdminDashboard = () => {
   };
 
   const tabs = [
+
     { id: 'tab1', name: 'Add People', content: <SignupPage /> },
     { id: 'tab2', name: 'Logs', content: <LogsPage /> },
   ];
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} />
+      <Sidebar
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onLogout={handleLogout}
+      />
       <div className="flex-grow overflow-y-auto">
         <ContentArea tabs={tabs} activeTab={activeTab} />
         <ToastContainer />
