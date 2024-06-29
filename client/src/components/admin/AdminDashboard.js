@@ -7,6 +7,8 @@ import SignupPage from '../signup/SignupPage';
 import LogsPage from '../logs/LogsPage'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UploadFile from '../examiner/UploadFile';
+import PaperVersions from '../version-pdf/PaperVersions';
 
 
 const AdminDashboard = () => {
@@ -23,6 +25,8 @@ const AdminDashboard = () => {
 
     { id: 'tab1', name: 'Add People', content: <SignupPage /> },
     { id: 'tab2', name: 'Logs', content: <LogsPage /> },
+    { id: 'tab3', name: 'Upload Paper', content: <UploadFile />},
+    { id: 'tab4', name: 'paper', content: <PaperVersions />}
   ];
 
   return (
