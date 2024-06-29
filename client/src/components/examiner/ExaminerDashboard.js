@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContentArea from "../contentArea/ContentArea";
 import Sidebar from "../sidebar/Sidebar";
-import UpdatePaper from "./UpdatePaper";
+import UpdateFile from "./UpdateFile";
 import UploadFile from "./UploadFile";
 import ViewPaper from "./ViewPaper";
 
@@ -24,7 +24,7 @@ const ExaminerDashboard = () => {
     {
       id: "tab2",
       name: "Update Paper",
-      content: <UpdatePaper />,
+      content: <UpdateFile />,
     },
     {
       id: "tab3",
