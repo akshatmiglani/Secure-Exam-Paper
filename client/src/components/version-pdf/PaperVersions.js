@@ -5,6 +5,8 @@ import PaperCard from './PaperCard';
 const PaperVersions = () => {
     const [papers, setPapers] = useState([]);
     const [error, setError] = useState(null);
+    const [paperVersions, setPaperVersions] = useState({}); // State to store paper versions
+    const [showPDF, setShowPDF] = useState(null); // State to show PDF in parent component
 
     useEffect(() => {
         const fetchPapers = async () => {
@@ -19,18 +21,41 @@ const PaperVersions = () => {
         fetchPapers();
     }, []);
 
-    const handleUpdatePaper = async (id) => {
+    const handleShowVersions = async (id) => {
         try {
-            // Replace with your update logic using the provided API
-            const response = await axios.put(`http://localhost:4000/api/papers/${id}`, {
-                title: 'Updated Title', // Example updated title
-                scheduledFor: new Date().toISOString() // Example updated scheduledFor
+            const response = await axios.get(`http://localhost:4000/api/papers/${id}/versions`);
+            // Store versions in state using paper ID as key
+            setPaperVersions({
+                ...paperVersions,
+                [id]: response.data.versions
             });
-            console.log('Updated paper:', response.data);
-            // Optionally update state or perform other actions upon successful update
         } catch (error) {
-            console.error('Error updating paper:', error);
-            setError('Failed to update paper');
+            console.error('Error fetching paper versions:', error);
+            setError('Failed to fetch paper versions');
+        }
+    };
+
+    const togglePDFViewer = (url) => {
+        setShowPDF(url);
+    };
+
+    const handleDownloadPDF = async (url) => {
+        try {
+            const response = await axios.get(url, {
+                responseType: 'blob', // Important: responseType as blob
+            });
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'download.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading PDF:', error);
+            // Handle error
         }
     };
 
@@ -45,7 +70,13 @@ const PaperVersions = () => {
     return (
         <div className="flex flex-col items-center mt-4 space-y-4">
             {papers.map((paper) => (
-                <PaperCard key={paper._id} paper={paper} onUpdate={handleUpdatePaper} />
+                <PaperCard
+                    key={paper._id}
+                    paper={paper}
+                    onShowVersions={handleShowVersions}
+                    onTogglePDFViewer={togglePDFViewer} // Pass down toggle function
+                    onDownloadPDF={handleDownloadPDF} // Pass down download function
+                />
             ))}
         </div>
     );

@@ -6,6 +6,7 @@ const Paper = require("../models/Paper");
 const s3 = require("../awsConfig");
 const verifyToken = require("../middleware/auth");
 
+
 const upload = multer({ dest: "uploads/" });
 
 router.post("/", verifyToken, upload.single("pdf"), async (req, res) => {
