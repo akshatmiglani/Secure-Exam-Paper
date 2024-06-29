@@ -248,47 +248,18 @@ router.get('/', async (req, res) => {
                         scheduledFor: version.scheduledFor,
                         downloadUrl: null, // Placeholder value or handle error case
                     };
-                    allVersionsPapers.push(paperInfo);router.get('/', async (req, res) => {
-  try {
-    // Fetch all papers from the database
-    const papers = await Paper.find({});
-
-    // Array to store formatted response
-    const allVersionsPapers = [];
-
-    // Iterate through each paper to include all versions
-    for (const paper of papers) {
-      const { _id, title, versions } = paper;
-
-      // Iterate through all versions of the paper
-      for (const version of versions) {
-        try {
-          // Generate downloadable link with expiry (adjust expiry time as needed)
-          const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${version.s3Key}`;
-
-          const paperInfo = {
-            _id,
-            title,
-            scheduledFor: version.scheduledFor,
-            downloadUrl,
-          };
-
-          // Push version info to response array
-          allVersionsPapers.push(paperInfo);
-        } catch (err) {
-          console.error("Error generating downloadable URL:", err);
-          // Handle error, e.g., assign a placeholder value for downloadUrl
-          const paperInfo = {
-            _id,
-            title,
-            scheduledFor: version.scheduledFor,
-            downloadUrl: null, // Placeholder value or handle error case
-          };
-          allVersionsPapers.push(paperInfo);
+                    allVersionsPapers.push(paperInfo);
+                }
+            }
         }
-      }
-    }
 
+        // Return JSON response with all versions papers
+        res.json(allVersionsPapers);
+    } catch (err) {
+        console.error('Error fetching all papers:', err);
+        res.status(500).json({ error: 'Failed to fetch all papers' });
+    }
+});
 
 router.get("/:id/latest", async (req, res) => {
   const paperId = req.params.id;
