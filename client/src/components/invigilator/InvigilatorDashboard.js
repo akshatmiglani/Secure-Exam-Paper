@@ -72,7 +72,7 @@ const InvigilatorDashboard = () => {
             </object>
           </div>
         )}
-        <ContentArea tabs={tabs} activeTab={activeTab} />
+        <ContentArea tabs={tabs} activeTab={activeTab} role="Invigilator" />
         {error && <p>Error loading papers: {error}</p>}
       </div>
     </div>
