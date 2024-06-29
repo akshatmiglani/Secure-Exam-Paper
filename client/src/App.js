@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import DownloadFile from './components/papers/DownloadFile';
 import UpdateFile from './components/papers/UpdateFile';
 import UploadFile from './components/papers/UploadFile';
+import PapersList from './components/papers/PapersList';
 
 const App = () => {
   return (
@@ -29,9 +30,23 @@ const App = () => {
           path="/invigilator"
           element={<PrivateRoute element={InvigilatorDashboard} roles={['invigilator']} />}
         />
-        <Route path="/upload" element={<UploadFile />} />
-        <Route path="/download/:id/version/:versionId" element={<DownloadFile />} />
-        <Route path="/update/:id" element={<UpdateFile />} />
+        <Route
+          path="/upload"
+          element={<PrivateRoute element={UploadFile} roles={['admin', 'examiner']} />}
+        />
+        <Route
+          path="/download/:id/version/:versionId"
+          element={<PrivateRoute element={DownloadFile} roles={['admin', 'examiner']} />}
+        />
+        <Route
+          path="/update/:id"
+          element={<PrivateRoute element={UpdateFile} roles={['admin', 'examiner']} />}
+        />
+        <Route
+          path="/all"
+          element={<PrivateRoute element={PapersList} roles={['admin', 'examiner']} />}
+        />
+
       </Routes>
     </Router>
   );
