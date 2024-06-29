@@ -46,6 +46,7 @@ const ExaminerDashboard = () => {
         tabs={tabs}
         activeTab={activeTab}
         title="Examiner Dashboard"
+        role="examiner"
       />
     </div>
   );

@@ -38,7 +38,7 @@ const AdminDashboard = () => {
         onLogout={handleLogout}
       />
       <div className="flex-grow overflow-y-auto">
-        <ContentArea tabs={tabs} activeTab={activeTab} />
+        <ContentArea tabs={tabs} activeTab={activeTab} role="admin" />
         <ToastContainer />
       </div>
     </div>
