@@ -22,8 +22,8 @@ const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/users/signup', formData);
-      navigate('/login'); 
+      await axios.post('http://localhost:4000/api/users/signup', formData);
+      navigate('/admin'); 
     } catch (error) {
       setError('Error creating user');
     }
