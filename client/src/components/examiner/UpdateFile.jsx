@@ -1,13 +1,40 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-function UploadFile() {
+const UpdateFile = () => {
+  const { id } = useParams();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [scheduledForDate, setScheduledForDate] = useState("");
   const [scheduledForTime, setScheduledForTime] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
+  const [updating, setUpdating] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
+
+  useEffect(() => {
+    const fetchFileDetails = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+        const response = await axios.get(
+          `http://localhost:4000/api/papers/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { title, scheduledFor } = response.data; // Adjust as per your API response structure
+        setTitle(title);
+        const scheduledDate = new Date(scheduledFor);
+        setScheduledForDate(scheduledDate.toISOString().split("T")[0]);
+        setScheduledForTime(scheduledDate.toTimeString().split(" ")[0]);
+      } catch (error) {
+        console.error("Error fetching file details:", error);
+      }
+    };
+
+    fetchFileDetails();
+  }, [id]);
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
@@ -17,39 +44,38 @@ function UploadFile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
     const scheduledFor = new Date(`${scheduledForDate}T${scheduledForTime}`);
     const formData = new FormData();
     formData.append("pdf", file);
     formData.append("title", title);
     formData.append("scheduledFor", scheduledFor.toISOString());
 
-    setUploading(true);
+    setUpdating(true);
+    setUpdateError(null); // Clear previous error
+
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/papers",
+      const response = await axios.put(
+        `http://localhost:4000/api/papers/${id}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response.data);
+      console.log("File updated successfully:", response.data);
     } catch (error) {
-      console.error("Error uploading file:", error);
-      setUploadError("Failed to upload file");
+      console.error("Error updating file:", error);
+      setUpdateError("Failed to update file");
     } finally {
-      setUploading(false);
+      setUpdating(false);
     }
   };
 
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <h1 className="text-2xl font-bold mb-6 text-center p-4 bg-blue-500 text-white">
-        Upload a Paper
+      <h1 className="text-2xl font-bold mb-6 text-center p-4 bg-green-700 text-white">
+        Update File
       </h1>
       <form className="p-4" onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -94,21 +120,21 @@ function UploadFile() {
         </div>
         <button
           type="submit"
-          disabled={uploading}
+          disabled={updating}
           className={`w-full py-2 px-4 text-white rounded-md ${
-            uploading
+            updating
               ? "bg-gray-500 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-700"
+              : "bg-green-700 hover:bg-green-900"
           }`}
         >
-          {uploading ? "Uploading..." : "Upload"}
+          {updating ? "Updating..." : "Update"}
         </button>
-        {uploadError && (
-          <p className="mt-4 text-red-500 text-center">{uploadError}</p>
+        {updateError && (
+          <p className="mt-4 text-red-500 text-center">{updateError}</p>
         )}
       </form>
     </div>
   );
-}
+};
 
-export default UploadFile;
+export default UpdateFile;

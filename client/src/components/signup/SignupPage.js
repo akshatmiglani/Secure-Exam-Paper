@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const SignupPage = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     username: '',
     password: '',
     role: 'admin'
-  });
+  };
+  const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -23,6 +27,8 @@ const SignupPage = () => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:4000/api/users/signup', formData);
+      toast.success('Added successfully!');
+      setFormData(initialFormData);
       navigate('/admin'); 
     } catch (error) {
       setError('Error creating user');
@@ -31,8 +37,9 @@ const SignupPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <ToastContainer />
       <div className="max-w-md w-full bg-white p-8 shadow-lg rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Add User</h2>
         {error && <p className="text-red-600 text-center">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -77,7 +84,7 @@ const SignupPage = () => {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition duration-200"
           >
-            Sign Up
+            Add User
           </button>
         </form>
         {/* <p className="mt-4 text-center text-gray-700">
