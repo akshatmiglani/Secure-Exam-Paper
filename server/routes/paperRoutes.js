@@ -81,7 +81,6 @@ router.put("/:id", verifyToken, upload.single("pdf"), async (req, res) => {
   }
 });
 
-
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -94,6 +93,7 @@ router.get("/:id", async (req, res) => {
     console.error("Error fetching file version:", err);
     res.status(500).send(err.message);
   }
+});
 
 router.get("/:id/version/:versionId", async (req, res) => {
   const { id, versionId } = req.params;
@@ -123,96 +123,97 @@ router.get("/:id/version/:versionId", async (req, res) => {
 });
 
 module.exports = router;
-  
+
 // Route to fetch all papers and generate download URLs
-router.get('/', async (req, res) => {
-    try {
-        // Fetch all papers from the database
-        const papers = await Paper.find({});
+router.get("/", async (req, res) => {
+  try {
+    // Fetch all papers from the database
+    const papers = await Paper.find({});
 
-        // Array to store formatted response
-        const allVersionsPapers = [];
+    // Array to store formatted response
+    const allVersionsPapers = [];
 
-        // Iterate through each paper to include all versions
-        for (const paper of papers) {
-            const { _id, title, versions } = paper;
+    // Iterate through each paper to include all versions
+    for (const paper of papers) {
+      const { _id, title, versions } = paper;
 
-            // Iterate through all versions of the paper
-            for (const version of versions) {
-                try {
-                    // Generate downloadable link with expiry (adjust expiry time as needed)
-                    const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${version.s3Key}`
+      // Iterate through all versions of the paper
+      for (const version of versions) {
+        try {
+          // Generate downloadable link with expiry (adjust expiry time as needed)
+          const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${version.s3Key}`;
 
-                    const paperInfo = {
-                        _id,
-                        title,
-                        scheduledFor: version.scheduledFor,
-                        downloadUrl,
-                    };
+          const paperInfo = {
+            _id,
+            title,
+            scheduledFor: version.scheduledFor,
+            downloadUrl,
+          };
 
-                    // Push version info to response array
-                    allVersionsPapers.push(paperInfo);
-                } catch (err) {
-                    console.error('Error generating downloadable URL:', err);
-                    // Handle error, e.g., assign a placeholder value for downloadUrl
-                    const paperInfo = {
-                        _id,
-                        title,
-                        scheduledFor: version.scheduledFor,
-                        downloadUrl: null, // Placeholder value or handle error case
-                    };
-                    allVersionsPapers.push(paperInfo);
-                }
-            }
+          // Push version info to response array
+          allVersionsPapers.push(paperInfo);
+        } catch (err) {
+          console.error("Error generating downloadable URL:", err);
+          // Handle error, e.g., assign a placeholder value for downloadUrl
+          const paperInfo = {
+            _id,
+            title,
+            scheduledFor: version.scheduledFor,
+            downloadUrl: null, // Placeholder value or handle error case
+          };
+          allVersionsPapers.push(paperInfo);
         }
-
-        // Return JSON response with all versions papers
-        res.json(allVersionsPapers);
-    } catch (err) {
-        console.error('Error fetching all papers:', err);
-        res.status(500).json({ error: 'Failed to fetch all papers' });
+      }
     }
+
+    // Return JSON response with all versions papers
+    res.json(allVersionsPapers);
+  } catch (err) {
+    console.error("Error fetching all papers:", err);
+    res.status(500).json({ error: "Failed to fetch all papers" });
+  }
 });
 
+router.get("/:id/latest", async (req, res) => {
+  const paperId = req.params.id;
 
-router.get('/:id/latest', async (req, res) => {
-    const paperId = req.params.id;
+  try {
+    // Find the paper by _id
+    const paper = await Paper.findById(paperId);
 
-    try {
-        // Find the paper by _id
-        const paper = await Paper.findById(paperId);
-
-        if (!paper) {
-            return res.status(404).json({ error: 'Paper not found' });
-        }
-
-        // Sort versions by createdAt in descending order to get the latest version
-        paper.versions.sort((a, b) => b.createdAt - a.createdAt);
-
-        // Get the latest version
-        const latestVersion = paper.versions[0];
-
-        if (!latestVersion) {
-            return res.status(404).json({ error: 'No versions found for this paper' });
-        }
-
-        // Generate downloadable link with expiry (adjust expiry time as needed)
-        const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${latestVersion.s3Key}`;
-
-        // Prepare response object
-        const paperInfo = {
-            _id: paper._id,
-            title: paper.title,
-            scheduledFor: latestVersion.scheduledFor,
-            downloadUrl,
-        };
-
-        // Return JSON response with the latest version paper info
-        res.json(paperInfo);
-    } catch (err) {
-        console.error('Error fetching latest version:', err);
-        res.status(500).json({ error: 'Failed to fetch latest version' });
+    if (!paper) {
+      return res.status(404).json({ error: "Paper not found" });
     }
+
+    // Sort versions by createdAt in descending order to get the latest version
+    paper.versions.sort((a, b) => b.createdAt - a.createdAt);
+
+    // Get the latest version
+    const latestVersion = paper.versions[0];
+
+    if (!latestVersion) {
+      return res
+        .status(404)
+        .json({ error: "No versions found for this paper" });
+    }
+
+    // Generate downloadable link with expiry (adjust expiry time as needed)
+    const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${latestVersion.s3Key}`;
+
+    // Prepare response object
+    const paperInfo = {
+      _id: paper._id,
+      title: paper.title,
+      scheduledFor: latestVersion.scheduledFor,
+      downloadUrl,
+    };
+
+    // Return JSON response with the latest version paper info
+    res.json(paperInfo);
+  } catch (err) {
+    console.error("Error fetching latest version:", err);
+    res.status(500).json({ error: "Failed to fetch latest version" });
+  }
 });
 
 module.exports = router;
