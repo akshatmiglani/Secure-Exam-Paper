@@ -93,9 +93,9 @@ const LoginPage = () => {
             Login
           </button>
         </form>
-        <p className="mt-4 text-center text-gray-700">
+        {/* <p className="mt-4 text-center text-gray-700">
           Don't have an account? <a href="/signup" className="text-indigo-600 hover:underline">Sign up</a>
-        </p>
+        </p> */}
       </div>
     </div>
   );

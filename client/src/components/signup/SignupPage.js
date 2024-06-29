@@ -1,4 +1,3 @@
-// src/components/signup/SignupPage.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -81,9 +80,9 @@ const SignupPage = () => {
             Sign Up
           </button>
         </form>
-        <p className="mt-4 text-center text-gray-700">
+        {/* <p className="mt-4 text-center text-gray-700">
           Already have an account? <a href="/login" className="text-indigo-600 hover:underline">Log in</a>
-        </p>
+        </p> */}
       </div>
     </div>
   );
