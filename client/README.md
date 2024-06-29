@@ -1,114 +1,70 @@
-# Secure Examination Paper Distribution System
+# Getting Started with Create React App
 
-Creating a secure examination paper distribution system is essential to maintain the integrity and confidentiality of exams.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Core Features
+## Available Scripts
 
-### 1. User Authentication and Authorization
+In the project directory, you can run:
 
-- *Secure login system* for different user roles: administrators, examiners, and invigilators.
-- *Role-based access control* to ensure data privacy and security.
+### `npm start`
 
-### 2. Secure Paper Upload and Management
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-- *Paper upload* by administrators and examiners.
-- *Encryption* of papers upon upload to ensure confidentiality.
-- *Version control* to manage updates and revisions to papers.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-### 3. Access Control and Distribution
+### `npm test`
 
-- *Granular access control* to ensure only authorized personnel can access specific papers.
-- *Scheduled distribution* of papers to ensure they are available only at the specified times.
-- *Logging* of all access attempts for audit purposes.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### 4. Exam Paper Viewing and Download
+### `npm run build`
 
-- *Secure interface* for authorized users to view and download examination papers.
-- *Watermarking and tracking* to prevent unauthorized sharing.
-- *Time-limited access* to downloaded papers to ensure they are only accessible during the examination period.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## Tech Stack
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- *Backend*: Node.js, MongoDB
-- *Frontend*: React
-- *Cloud Services*: Amazon AWS (for storage, hosting, and other services)
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Getting Started
+### `npm run eject`
 
-### Prerequisites
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
-- [AWS Account](https://aws.amazon.com/)
-- [React](https://reactjs.org/)
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Installation
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-1. Clone the repository:
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-   bash
-   git clone https://github.com/yourusername/secure-exam-paper-system.git
-   cd secure-exam-paper-system
-   
+## Learn More
 
-2. Install server dependencies:
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-   bash
-   cd server
-   npm install
-   
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-3. Install client dependencies:
+### Code Splitting
 
-   bash
-   cd ../client
-   npm install
-   
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-4. Set up environment variables. Create a .env file in the server directory and add your MongoDB URI, AWS credentials, and other necessary configurations:
-   plaintext
-   MONGODB_URI=your_mongodb_uri
-   JWT_SECRET=your_jwt_secret
-   AWS_ACCESS_KEY_ID=your_aws_access_key_id
-   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
-   S3_BUCKET_NAME=your_s3_bucket_name
-   
+### Analyzing the Bundle Size
 
-### Running the Application
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-1. Start the server:
+### Making a Progressive Web App
 
-   bash
-   cd server
-   npm start
-   
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-2. Start the React client:
-   bash
-   cd ../client
-   npm start
-   
+### Advanced Configuration
 
-### Usage
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-1. *Admin Login*: Use the admin credentials to log in and manage the system.
-2. *Upload Papers*: Administrators and examiners can upload examination papers which will be encrypted and stored in AWS S3.
-3. *Schedule Distribution*: Set schedules for when papers should be made available to invigilators.
-4. *View/Download Papers*: Authorized users can view and download papers, which will be watermarked and time-limited.
-<!--
+### Deployment
 
-## Deployment
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### Backend
+### `npm run build` fails to minify
 
-1. Deploy the backend server on an AWS EC2 instance or using AWS Elastic Beanstalk.
-2. Ensure that your MongoDB instance is accessible (either locally or through a cloud service like MongoDB Atlas).
-
-### Frontend
-
-1. Deploy the React application using AWS S3 and CloudFront for static website hosting.
-2. Configure your AWS S3 bucket for website hosting and set up CloudFront for CDN. -->
-
-## Acknowledgements
-
-- Thanks to the teams for their valuable support.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
