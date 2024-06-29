@@ -1,5 +1,5 @@
-const { Types } = require('aws-sdk/clients/acm');
 const mongoose = require('mongoose');
+const User = require('./User');
 const { Schema } = mongoose;
 
 const PaperSchema = new Schema({
@@ -14,7 +14,7 @@ const PaperSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     scheduledFor: { type: Date, required: true },
-    uploadedBy: {type: Types.ObjectId,ref:User}
+    uploadedBy: {type: Schema.Types.ObjectId,ref:User}
 });
 
 const Paper = mongoose.model('Paper', PaperSchema);
