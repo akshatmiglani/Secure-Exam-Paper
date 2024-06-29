@@ -5,14 +5,18 @@ import Sidebar from '../sidebar/Sidebar';
 import ContentArea from '../contentArea/ContentArea';
 import SignupPage from '../signup/SignupPage';
 import LogsPage from '../logs/LogsPage'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    localStorage.removeItem('token');
+    toast.success('Log Out successfully!');
+    navigate('/login');
   };
 
   const tabs = [
@@ -31,6 +35,7 @@ const AdminDashboard = () => {
       />
       <div className="flex-grow overflow-y-auto">
         <ContentArea tabs={tabs} activeTab={activeTab} />
+        <ToastContainer />
       </div>
     </div>
   );
