@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ContentArea from "../contentArea/ContentArea";
-import Sidebar from "../sidebar/Sidebar";
-import SignupPage from "../signup/SignupPage";
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../sidebar/Sidebar';
+import ContentArea from '../contentArea/ContentArea';
+import SignupPage from '../signup/SignupPage';
+import LogsPage from '../logs/LogsPage'
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -14,8 +16,9 @@ const AdminDashboard = () => {
   };
 
   const tabs = [
-    { id: "tab1", name: "Add People", content: <SignupPage /> },
-    { id: "tab2", name: "Tab 2", content: "This is the content of Tab 2." },
+
+    { id: 'tab1', name: 'Add People', content: <SignupPage /> },
+    { id: 'tab2', name: 'Logs', content: <LogsPage /> },
   ];
 
   return (

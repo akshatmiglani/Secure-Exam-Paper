@@ -1,7 +1,7 @@
-// routes/userRoutes.js
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Log = require('../models/Log');
 
 const router = express.Router();
 
@@ -9,11 +9,21 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   const { username, password, role } = req.body;
   try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
     const user = new User({ username, password, role });
     await user.save();
+
+    const log = new Log({ action: 'signup', username });
+    await log.save();
+
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
-    res.status(400).json({ error: 'Error creating user' });
+    console.error('Error during signup:', error); // Detailed error logging
+    res.status(500).json({ error: 'Error creating user', details: error.message });
   }
 });
 
@@ -32,9 +42,14 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id, role: user.role }, 'secret', { expiresIn: '1h' });
+
+    const log = new Log({ action: 'login', username });
+    await log.save();
+
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error during login:', error); // Detailed error logging
+    res.status(500).json({ error: 'Server error', details: error.message });
   }
 });
 
@@ -47,6 +62,7 @@ const verifyTokenAndRole = (roles) => (req, res, next) => {
 
   jwt.verify(token, 'secret', (err, decoded) => {
     if (err) {
+      console.error('Error during token verification:', err); // Detailed error logging
       return res.status(401).json({ error: 'Unauthorized: Invalid token' });
     }
 
@@ -72,6 +88,17 @@ router.get('/examiner', verifyTokenAndRole(['examiner']), async (req, res) => {
 // Invigilator panel route
 router.get('/invigilator', verifyTokenAndRole(['invigilator']), async (req, res) => {
   res.json({ message: 'Welcome to the invigilator panel' });
+});
+
+// Logs route
+router.get('/logs', verifyTokenAndRole(['admin']), async (req, res) => {
+  try {
+    const logs = await Log.find().sort({ timestamp: -1 });
+    res.json(logs);
+  } catch (error) {
+    console.error('Error fetching logs:', error); // Detailed error logging
+    res.status(500).json({ error: 'Error fetching logs', details: error.message });
+  }
 });
 
 module.exports = router;
