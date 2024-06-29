@@ -1,12 +1,16 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    role: "admin", // Default role set to 'admin'
+    username: '',
+    password: '',
+    role: 'admin' 
+
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -23,6 +27,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/api/users/login', formData);
+      toast.success('Login successfully!');
       localStorage.setItem('token', response.data.token);
       switch (formData.role) {
         case "admin":
@@ -43,7 +48,9 @@ const LoginPage = () => {
   };
 
   return (
+
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <ToastContainer />
       <div className="max-w-md w-full bg-white p-8 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         {error && <p className="text-red-600 text-center">{error}</p>}
@@ -99,9 +106,9 @@ const LoginPage = () => {
             Login
           </button>
         </form>
-        <p className="mt-4 text-center text-gray-700">
+        {/* <p className="mt-4 text-center text-gray-700">
           Don't have an account? <a href="/signup" className="text-indigo-600 hover:underline">Sign up</a>
-        </p>
+        </p> */}
       </div>
     </div>
   );
