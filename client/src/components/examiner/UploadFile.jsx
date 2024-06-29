@@ -1,5 +1,44 @@
 import axios from "axios";
+import { PDFDocument, degrees, rgb } from "pdf-lib"; // Import degrees
 import React, { useState } from "react";
+
+const addWatermark = async (file) => {
+  const reader = new FileReader();
+
+  return new Promise((resolve, reject) => {
+    reader.onload = async () => {
+      try {
+        const pdfDoc = await PDFDocument.load(new Uint8Array(reader.result));
+        const watermarkText = "Confidential";
+
+        // Iterate over each page
+        const pages = pdfDoc.getPages();
+        pages.forEach((page) => {
+          const { width, height } = page.getSize();
+          page.drawText(watermarkText, {
+            x: width / 2 - 50,
+            y: height / 2,
+            size: 50,
+            color: rgb(0.95, 0.1, 0.1),
+            opacity: 0.5,
+            rotate: degrees(-45), // Use degrees for rotation
+          });
+        });
+
+        const pdfBytes = await pdfDoc.save();
+        const watermarkedFile = new File([pdfBytes], file.name, {
+          type: file.type,
+        });
+        resolve(watermarkedFile);
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    reader.onerror = (error) => reject(error);
+    reader.readAsArrayBuffer(file);
+  });
+};
 
 function UploadFile() {
   const [file, setFile] = useState(null);
@@ -21,12 +60,16 @@ function UploadFile() {
     const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
     const scheduledFor = new Date(`${scheduledForDate}T${scheduledForTime}`);
     const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("title", title);
-    formData.append("scheduledFor", scheduledFor.toISOString());
 
     setUploading(true);
+
     try {
+      const watermarkedFile = await addWatermark(file);
+
+      formData.append("pdf", watermarkedFile);
+      formData.append("title", title);
+      formData.append("scheduledFor", scheduledFor.toISOString());
+
       const response = await axios.post(
         "http://localhost:4000/api/papers",
         formData,
@@ -37,6 +80,7 @@ function UploadFile() {
           },
         }
       );
+
       console.log(response.data);
     } catch (error) {
       console.error("Error uploading file:", error);
