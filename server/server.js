@@ -6,6 +6,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const paperRoutes = require('./routes/paperRoutes');
 const bodyParser = require('body-parser');
+const logRoutes = require('./routes/logs')
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -31,6 +32,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/papers',paperRoutes);
+app.use('/api/logs', logRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is runnin...`);

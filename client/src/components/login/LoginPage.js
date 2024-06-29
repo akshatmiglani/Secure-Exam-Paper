@@ -22,7 +22,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', formData);
+      const response = await axios.post('http://localhost:4000/api/users/login', formData);
       localStorage.setItem('token', response.data.token);
       switch (formData.role) {
         case 'admin':
@@ -93,9 +93,9 @@ const LoginPage = () => {
             Login
           </button>
         </form>
-        {/* <p className="mt-4 text-center text-gray-700">
+        <p className="mt-4 text-center text-gray-700">
           Don't have an account? <a href="/signup" className="text-indigo-600 hover:underline">Sign up</a>
-        </p> */}
+        </p>
       </div>
     </div>
   );
