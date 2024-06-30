@@ -37,7 +37,7 @@ router.get('/scheduled/', async (req, res) => {
             }
 
             // Generate a signed URL for downloading the latest version from S3
-            const downloadUrl = https://${process.env.S3_BUCKET}.s3.amazonaws.com/${latestVersion.s3Key};
+            const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${latestVersion.s3Key}`;
 
             // Prepare response object
             return {
@@ -144,34 +144,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id/version/:versionId", async (req, res) => {
-  const { id, versionId } = req.params;
-  try {
-    const paper = await Paper.findById(id);
-    if (!paper) return res.status(404).send("Paper not found");
-
-    const version = paper.versions.find((v) => v.versionId === versionId);
-    if (!version) return res.status(404).send("Version not found");
-
-    const params = {
-      Bucket: process.env.S3_BUCKET,
-      Key: version.s3Key,
-    };
-
-    s3.getSignedUrl("getObject", params, (err, signedUrl) => {
-      if (err) {
-        console.error("Error generating signed URL:", err);
-        return res.status(500).send("Failed to generate signed URL");
-      }
-      res.status(200).json({ version, signedUrl });
-    });
-  } catch (err) {
-    console.error("Error fetching file version:", err);
-    res.status(500).send(err.message);
-  }
-});
-
-module.exports = router;
 
 // Route to fetch all papers and generate download URLs
 router.get("/", async (req, res) => {
@@ -184,7 +156,7 @@ router.get("/", async (req, res) => {
 
     // Iterate through each paper to include all versions
     for (const paper of papers) {
-      const { _id, title, versions } = paper;
+      const { _id, title, versions,scheduledFor } = paper;
 
       // Iterate through all versions of the paper
       for (const version of versions) {
@@ -195,7 +167,7 @@ router.get("/", async (req, res) => {
           const paperInfo = {
             _id,
             title,
-            scheduledFor: version.scheduledFor,
+            scheduledFor,
             downloadUrl,
           };
 
@@ -207,8 +179,8 @@ router.get("/", async (req, res) => {
           const paperInfo = {
             _id,
             title,
-            scheduledFor: version.scheduledFor,
-            downloadUrl: null, // Placeholder value or handle error case
+            scheduledFor,
+            downloadUrl: null, 
           };
           allVersionsPapers.push(paperInfo);
         }
@@ -253,7 +225,7 @@ router.get("/:id/latest", async (req, res) => {
     const paperInfo = {
       _id: paper._id,
       title: paper.title,
-      scheduledFor: latestVersion.scheduledFor,
+      scheduledFor:paper.scheduledFor,
       downloadUrl,
     };
 
