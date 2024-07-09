@@ -68,6 +68,7 @@ router.get('/user', verifyToken, async (req, res) => {
     // Use req.user.id directly as ObjectId
     const papers = await Paper.find({ uploadedBy: req.user.id });
 
+
     if (papers.length === 0) {
       return res.status(404).json({ message: `No papers uploaded by ${req.user.username}` });
     }
@@ -81,6 +82,7 @@ router.get('/user', verifyToken, async (req, res) => {
 
 
 // create new paper
+
 router.post("/", verifyToken, upload.single("pdf"), async (req, res) => {
   const { title, scheduledFor } = req.body;
   const fileContent = fs.readFileSync(req.file.path);
