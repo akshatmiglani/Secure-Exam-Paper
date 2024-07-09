@@ -6,6 +6,7 @@ import UpdateFile from "./UpdateFile";
 import UploadFile from "./UploadFile";
 import ViewPaper from "./ViewPaper";
 import axios from "axios";
+import ViewUserPaper from "./ViewUserPaper";
 
 const ExaminerDashboard = () => {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -30,13 +31,19 @@ const ExaminerDashboard = () => {
     {
       id: "tab1",
       name: "Upload Paper",
-      content: <UploadFile />,
+      content: <UploadFile  />,
       visible:true
     },
+    // {
+    //   id: "tab2",
+    //   name: "View all Papers",
+    //   content: <ViewPaper handleUpload={handleUpload} />,
+    //   visible:true
+    // },
     {
       id: "tab2",
-      name: "View all Papers",
-      content: <ViewPaper handleUpload={handleUpload} />,
+      name: "View your Papers",
+      content: <ViewUserPaper handleUpload={handleUpload} />,
       visible:true
     },
     {
