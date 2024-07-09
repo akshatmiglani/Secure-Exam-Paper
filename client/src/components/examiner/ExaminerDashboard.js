@@ -42,11 +42,7 @@ const ExaminerDashboard = () => {
         onLogout={handleLogout}
         title="Examiner Panel"
       />
-      <ContentArea
-        tabs={tabs}
-        activeTab={activeTab}
-        title="Examiner Dashboard"
-      />
+      <ContentArea tabs={tabs} activeTab={activeTab} role="Examiner" />
     </div>
   );
 };

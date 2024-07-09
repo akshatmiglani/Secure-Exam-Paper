@@ -8,6 +8,62 @@ const verifyToken = require("../middleware/auth");
 
 const upload = multer({ dest: "uploads/" });
 
+router.get("/scheduled/", async (req, res) => {
+  const currentTime = new Date();
+  const next30Minutes = new Date(currentTime.getTime() + 30 * 60000);
+  const past1Hour = new Date(currentTime.getTime() - 60 * 60000);
+
+  try {
+    // Find papers scheduled within the past 1 hour and the next 30 minutes
+    const papers = await Paper.find({
+      scheduledFor: { $gte: past1Hour, $lt: next30Minutes },
+    });
+
+    if (papers.length === 0) {
+      return res.status(404).json({
+        error: "No papers scheduled for the past 1 hour or the next 30 minutes",
+      });
+    }
+
+    // Loop through the found papers to get their latest versions
+    const papersWithLatestVersion = await Promise.all(
+      papers.map(async (paper) => {
+        // Sort versions by createdAt in descending order to get the latest version
+        paper.versions.sort((a, b) => b.createdAt - a.createdAt);
+
+        // Get the latest version
+        const latestVersion = paper.versions[0];
+
+        if (!latestVersion) {
+          return null; // No versions found for this paper
+        }
+
+        // Generate a signed URL for downloading the latest version from S3
+        const downloadUrl = `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${latestVersion.s3Key}`;
+
+        // Prepare response object
+        return {
+          _id: paper._id,
+          title: paper.title,
+          scheduledFor: paper.scheduledFor,
+          downloadUrl,
+        };
+      })
+    );
+
+    // Filter out null values (in case some papers didn't have versions)
+    const response = papersWithLatestVersion.filter((paper) => paper !== null);
+
+    res.json(response);
+  } catch (err) {
+    console.error(
+      "Error fetching papers scheduled for the past 1 hour or the next 30 minutes:",
+      err
+    );
+    res.status(500).json({ error: "Failed to fetch scheduled papers" });
+  }
+});
+
 router.post("/", verifyToken, upload.single("pdf"), async (req, res) => {
   const { title, scheduledFor } = req.body;
   const fileContent = fs.readFileSync(req.file.path);

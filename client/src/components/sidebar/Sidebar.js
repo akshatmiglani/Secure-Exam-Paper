@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
 
-const Sidebar = ({ tabs, activeTab, setActiveTab, onLogout }) => {
+const Sidebar = ({ tabs, activeTab, setActiveTab, onLogout, title }) => {
   return (
     <div className="w-64 bg-gray-800 h-screen overflow-y-auto">
       <div className="p-6">
-        <h2 className="text-white text-2xl font-semibold">Admin Panel</h2>
+        <h2 className="text-white text-2xl font-semibold">{title} Panel</h2>
         <ul className="mt-6">
           {tabs.map((tab) => (
             <li
               key={tab.id}
               className={`px-3 py-2 rounded-md cursor-pointer ${
-                activeTab === tab.id ? 'bg-gray-900 text-white' : 'text-gray-300'
+                activeTab === tab.id
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-300"
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
