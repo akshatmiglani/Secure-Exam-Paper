@@ -78,9 +78,7 @@ Creating a secure examination paper distribution system is essential to maintain
 
 1. Start the server:
 
-   bash
-   cd server
-   npm start
+   nodemon server.js
    
 
 2. Start the React client:
