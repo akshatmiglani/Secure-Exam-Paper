@@ -62,12 +62,13 @@ const ExaminerDashboard = () => {
         setActiveTab={setActiveTab}
         onLogout={handleLogout}
         title="Examiner Panel"
+        role="Examiner"
       />
       <ContentArea
         tabs={tabs}
         activeTab={activeTab}
         title="Examiner Dashboard"
-        role="examiner"
+        role="Examiner"
       />
     </div>
   );

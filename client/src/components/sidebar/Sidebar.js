@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Sidebar = ({ tabs, activeTab, setActiveTab, onLogout }) => {
+const Sidebar = ({ tabs, activeTab, setActiveTab, onLogout, role }) => {
   return (
     <div className="w-64 bg-gray-800 h-screen overflow-y-auto">
       <div className="p-6">
-        <h2 className="text-white text-2xl font-semibold">Admin Panel</h2>
+        <h2 className="text-white text-2xl font-semibold">{role} Panel</h2>
         <ul className="mt-6">
           {tabs.map((tab) => (
             <li
