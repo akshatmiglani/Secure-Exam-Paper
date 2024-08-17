@@ -100,7 +100,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-md rounded my-8">
+    <div className="w-full mx-auto bg-white shadow-md rounded my-8">
       <h1 className="text-2xl font-bold bg-blue-500 text-white p-4">
         Paper's List
       </h1>

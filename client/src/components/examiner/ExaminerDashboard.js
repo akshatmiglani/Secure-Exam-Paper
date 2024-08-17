@@ -4,16 +4,27 @@ import ContentArea from "../contentArea/ContentArea";
 import Sidebar from "../sidebar/Sidebar";
 import UpdateFile from "./UpdateFile";
 import UploadFile from "./UploadFile";
-import ViewPaper from "./ViewPaper";
 import axios from "axios";
 import ViewUserPaper from "./ViewUserPaper";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ExaminerDashboard = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    toast.warn('Logged out successfully!', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    setTimeout(() => {
+      navigate('/login');
+    }, 3000);
   };
   const handleUpload=async(id)=>{
     try {
@@ -64,6 +75,17 @@ const ExaminerDashboard = () => {
         title="Examiner Panel"
         role="Examiner"
       />
+      <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <ContentArea
         tabs={tabs}
         activeTab={activeTab}

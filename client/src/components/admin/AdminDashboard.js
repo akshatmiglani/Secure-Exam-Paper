@@ -6,8 +6,7 @@ import SignupPage from '../signup/SignupPage';
 import LogsPage from '../logs/LogsPage'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import UploadFile from '../examiner/UploadFile';
-import PaperVersions from '../version-pdf/PaperVersions';
+
 import axios from "axios";
 import ViewUserPaper from "../examiner/ViewUserPaper";
 
@@ -17,7 +16,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    toast.success('Logged out successfully!', {
+    toast.warn('Logged out successfully!', {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -51,7 +50,7 @@ const AdminDashboard = () => {
   }
 
   const tabs = [
-    { id: 'tab1', name: 'Add People', content: <SignupPage /> },
+    { id: 'tab1', name: 'Add User', content: <SignupPage /> },
     { id: 'tab2', name: 'Logs', content: <LogsPage /> },
     { id: 'tab3', name: 'View your Papers', content: <ViewUserPaper handleUpload={handleUpload} />}
   ];
