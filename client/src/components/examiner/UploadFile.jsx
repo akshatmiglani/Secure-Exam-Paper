@@ -1,6 +1,8 @@
 import axios from "axios";
 import { PDFDocument, degrees, rgb } from "pdf-lib"; // Import degrees
 import React, { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const addWatermark = async (file) => {
   const reader = new FileReader();
@@ -11,18 +13,30 @@ const addWatermark = async (file) => {
         const pdfDoc = await PDFDocument.load(new Uint8Array(reader.result));
         const watermarkText = "Confidential";
 
+        // Define watermark properties
+        const fontSize = 40;
+        const opacity = 0.3;
+        const angle = degrees(-45);
+        const color = rgb(0.5, 0.5, 0.5);
+
         // Iterate over each page
         const pages = pdfDoc.getPages();
         pages.forEach((page) => {
           const { width, height } = page.getSize();
-          page.drawText(watermarkText, {
-            x: width / 2 - 50,
-            y: height / 2,
-            size: 50,
-            color: rgb(0.95, 0.1, 0.1),
-            opacity: 0.5,
-            rotate: degrees(-45), // Use degrees for rotation
-          });
+          
+          // Add multiple watermarks across the page
+          for (let x = -width; x < width * 2; x += 200) {
+            for (let y = -height; y < height * 2; y += 150) {
+              page.drawText(watermarkText, {
+                x,
+                y,
+                size: fontSize,
+                color: color,
+                opacity,
+                rotate: angle,
+              });
+            }
+          }
         });
 
         const pdfBytes = await pdfDoc.save();
@@ -58,6 +72,14 @@ function UploadFile() {
     e.preventDefault();
 
     const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+    toast.success('Paper Uploaded Successfully!!', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
     const scheduledFor = new Date(`${scheduledForDate}T${scheduledForTime}`);
     const formData = new FormData();
 
@@ -92,6 +114,17 @@ function UploadFile() {
 
   return (
     <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       <h1 className="text-2xl font-bold mb-6 text-center p-4 bg-blue-500 text-white">
         Upload a Paper
       </h1>

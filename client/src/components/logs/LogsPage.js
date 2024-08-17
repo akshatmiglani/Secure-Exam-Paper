@@ -39,9 +39,9 @@ const LogsPage = () => {
           <tbody>
             {logs.map((log) => (
               <tr key={log._id}>
-                <td className="border px-4 py-2">{log.action}</td>
-                <td className="border px-4 py-2">{log.username}</td>
-                <td className="border px-4 py-2">{new Date(log.timestamp).toLocaleString()}</td>
+                <td className="border px-4 py-2 ">{log.action}</td>
+                <td className="border px-4 py-2 ">{log.username}</td>
+                <td className="border px-4 py-2 text-center">{new Date(log.timestamp).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
