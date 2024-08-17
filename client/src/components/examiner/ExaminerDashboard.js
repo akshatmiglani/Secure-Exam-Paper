@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ExaminerDashboard = () => {
   const [activeTab, setActiveTab] = useState("tab1");
+  
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -31,40 +32,47 @@ const ExaminerDashboard = () => {
       const response = await axios.get(`http://localhost:4000/api/papers/${id}`);
       const paper = response.data;
 
-      navigate(`/update/${id}`, { paper });
+      setTabs((prevTabs) => {
+        return prevTabs.map((tab) =>
+          tab.id === "tab3"
+            ? { ...tab, visible: true, content: <UpdateFile paper={paper} /> }
+            : tab
+        );
+      });
+
       setActiveTab("tab3");
     } catch (error) {
       console.error(`Error fetching paper details for id ${id}:`, error);
+      toast.error('Failed to fetch paper details. Please try again.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   }
-
-  const tabs = [
+  const [tabs,setTabs]=useState([
     {
       id: "tab1",
       name: "Upload Paper",
-      content: <UploadFile  />,
-      visible:true
+      content: <UploadFile />,
+      visible: true
     },
-    // {
-    //   id: "tab2",
-    //   name: "View all Papers",
-    //   content: <ViewPaper handleUpload={handleUpload} />,
-    //   visible:true
-    // },
     {
       id: "tab2",
       name: "View your Papers",
       content: <ViewUserPaper handleUpload={handleUpload} />,
-      visible:true
+      visible: true
     },
     {
-      id:"tab3",
-      name:"Update File",
+      id: "tab3",
+      name: "Update File",
       content: <UpdateFile />,
-      visible:false
+      visible: false
     }
-  ];
-  
+  ])
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar
