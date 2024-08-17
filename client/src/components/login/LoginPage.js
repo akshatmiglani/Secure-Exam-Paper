@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { jwtDecode } from 'jwt-decode';
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -25,30 +27,47 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:4000/api/users/login', formData);
-      toast.success('Login successful!', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      localStorage.setItem('token', response.data.token);
-      setTimeout(() => {
-        switch (formData.role) {
-          case "admin":
-            navigate("/admin");
-            break;
-          case "examiner":
-            navigate("/examiner");
-            break;
-          case "invigilator":
-            navigate("/invigilator");
-            break;
-          default:
-            navigate("/");
-        }
-      }, 3000);
+      const decodedToken = jwtDecode(response.data.token);
+
+      if (decodedToken.role === formData.role) {
+        toast.success('Login successful!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+
+        localStorage.setItem('token', response.data.token);
+
+        setTimeout(() => {
+          switch (formData.role) {
+            case "admin":
+              navigate("/admin");
+              break;
+            case "examiner":
+              navigate("/examiner");
+              break;
+            case "invigilator":
+              navigate("/invigilator");
+              break;
+            default:
+              navigate("/");
+          }
+        }, 3000);
+      } else {
+        // If roles don't match, show an error toast
+        setError("Invalid username, password, or role");
+        toast.error('Role mismatch. Please check your credentials.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     } catch (error) {
       setError("Invalid username, password, or role");
       toast.error('Login failed. Please check your credentials.', {

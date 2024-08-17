@@ -63,7 +63,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
         setPapers(response.data);
       } catch (error) {
         console.error(`Error fetching ${endpoint} papers:`, error);
-        setError(`Failed to fetch ${endpoint} papers`);
+        setError(`No available papers`);
       } finally {
         setLoading(false);
       }
@@ -96,7 +96,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p> {error}</p>;
   }
 
   return (
