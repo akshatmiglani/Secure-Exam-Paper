@@ -35,7 +35,7 @@ const ExaminerDashboard = () => {
       setTabs((prevTabs) => {
         return prevTabs.map((tab) =>
           tab.id === "tab3"
-            ? { ...tab, visible: true, content: <UpdateFile paper={paper} /> }
+            ? { ...tab, visible: true, content: <UpdateFile paper={paper} paperid={id}/> }
             : tab
         );
       });
