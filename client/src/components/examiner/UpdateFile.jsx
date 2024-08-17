@@ -1,9 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
-const UpdateFile = ({ paper }) => {
-  const { id } = useParams();
+const UpdateFile = ({ paper,paperid }) => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState(paper ? paper.title : "");
   const [scheduledForDate, setScheduledForDate] = useState(paper ? new Date(paper.scheduledFor).toISOString().split("T")[0] : "");
@@ -29,12 +27,14 @@ const UpdateFile = ({ paper }) => {
     setUpdateError(null); // Clear previous error
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:4000/api/papers/${id}`,
+        `http://localhost:4000/api/papers/${paperid}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
