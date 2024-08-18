@@ -104,7 +104,11 @@ function UploadFile() {
       );
 
       console.log(response.data);
-    } catch (error) {
+      setFile(null);
+      setTitle("");
+      setScheduledForDate("");
+      setScheduledForTime("");
+      } catch (error) {
       console.error("Error uploading file:", error);
       setUploadError("Failed to upload file");
     } finally {
