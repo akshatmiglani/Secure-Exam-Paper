@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
   optionsSuccessStatus: 200,
   credentials: true, 
 };
@@ -35,6 +36,10 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 app.use('/api/users', userRoutes);
 app.use('/api/papers',paperRoutes);
 app.use('/api/logs', logRoutes);
+
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 
 app.listen(PORT, () => {
   console.log(`Server is runnin...`);
