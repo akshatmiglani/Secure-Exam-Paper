@@ -93,7 +93,7 @@ function UploadFile() {
       formData.append("scheduledFor", scheduledFor.toISOString());
 
       const response = await axios.post(
-        "http://localhost:4000/api/papers",
+        `${process.env.REACT_APP_URL}/api/papers`,
         formData,
         {
           headers: {

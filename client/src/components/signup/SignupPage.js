@@ -26,7 +26,7 @@ const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4000/api/users/signup', formData);
+      await axios.post(`${process.env.REACT_APP_URL}/api/users/signup`, formData);
       toast.success('Added successfully!');
       setFormData(initialFormData);
       navigate('/admin'); 

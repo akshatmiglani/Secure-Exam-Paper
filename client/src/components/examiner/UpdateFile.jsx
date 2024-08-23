@@ -29,7 +29,7 @@ const UpdateFile = ({ paper,paperid }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:4000/api/papers/${paperid}`,
+        `${process.env.REACT_APP_URL}/api/papers/${paperid}`,
         formData,
         {
           headers: {

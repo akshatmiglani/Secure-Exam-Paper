@@ -12,6 +12,7 @@ import ViewUserPaper from "../examiner/ViewUserPaper";
 import UpdateFile from '../examiner/UpdateFile';
 
 const AdminDashboard = () => {
+  console.log(process.env.URL)
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("tab1");
 
@@ -32,7 +33,7 @@ const AdminDashboard = () => {
 
   const handleUpload = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/papers/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_URL}/api/papers/${id}`);
       const paper = response.data;
 
       setTabs((prevTabs) => {

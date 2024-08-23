@@ -9,7 +9,7 @@ const LogsPage = () => {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/logs');
+        const response = await axios.get(`${process.env.REACT_APP_URL}/api/logs`);
         setLogs(response.data);
         setLoading(false);
       } catch (error) {

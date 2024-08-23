@@ -15,7 +15,7 @@ const InvigilatorDashboard = () => {
   useEffect(() => {
     const fetchScheduledPapers = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/papers/scheduled/');
+        const response = await fetch(`${process.env.REACT_APP_URL}/api/papers/scheduled/`);
         if (!response.ok) {
           if(response.status === 404) {
             const errRes = await response.json();
