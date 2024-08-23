@@ -1,40 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
-const UpdateFile = () => {
-  const { id } = useParams();
+const UpdateFile = ({ paper,paperid }) => {
   const [file, setFile] = useState(null);
-  const [title, setTitle] = useState("");
-  const [scheduledForDate, setScheduledForDate] = useState("");
-  const [scheduledForTime, setScheduledForTime] = useState("");
+  const [title, setTitle] = useState(paper ? paper.title : "");
+  const [scheduledForDate, setScheduledForDate] = useState(paper ? new Date(paper.scheduledFor).toISOString().split("T")[0] : "");
+  const [scheduledForTime, setScheduledForTime] = useState(paper ? new Date(paper.scheduledFor).toTimeString().split(" ")[0] : "");
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState(null);
-
-  useEffect(() => {
-    const fetchFileDetails = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
-        const response = await axios.get(
-          `http://localhost:4000/api/papers/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const { title, scheduledFor } = response.data; // Adjust as per your API response structure
-        setTitle(title);
-        const scheduledDate = new Date(scheduledFor);
-        setScheduledForDate(scheduledDate.toISOString().split("T")[0]);
-        setScheduledForTime(scheduledDate.toTimeString().split(" ")[0]);
-      } catch (error) {
-        console.error("Error fetching file details:", error);
-      }
-    };
-
-    fetchFileDetails();
-  }, [id]);
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
@@ -54,12 +27,14 @@ const UpdateFile = () => {
     setUpdateError(null); // Clear previous error
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:4000/api/papers/${id}`,
+        `${process.env.REACT_APP_URL}/api/papers/${paperid}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

@@ -14,7 +14,7 @@ const UpdateFile = () => {
     useEffect(() => {
         const fetchFileDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:4000/api/papers/${id}`);
+                const response = await axios.get(`${process.env.REACT_APP_URL}/api/papers/${id}`);
                 const { title, scheduledFor } = response.data; // Adjust as per your API response structure
                 setTitle(title);
                 const scheduledDate = new Date(scheduledFor);
@@ -45,7 +45,7 @@ const UpdateFile = () => {
         setUpdateError(null); // Clear previous error
 
         try {
-            const response = await axios.put(`http://localhost:4000/api/papers/${id}`, formData, {
+            const response = await axios.put(`${process.env.REACT_APP_URL}/api/papers/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

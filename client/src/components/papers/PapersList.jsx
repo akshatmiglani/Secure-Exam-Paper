@@ -9,7 +9,7 @@ const PapersList = ({ endpoint }) => {
   useEffect(() => {
     const fetchPapers = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/papers/`); 
+        const response = await axios.get(`${process.env.REACT_APP_URL}/api/papers/`); 
         setPapers(response.data);
       } catch (error) {
         console.error(`Error fetching ${endpoint} papers:`, error);

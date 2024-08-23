@@ -11,7 +11,7 @@ const PaperVersions = () => {
     useEffect(() => {
         const fetchPapers = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/papers');
+                const response = await axios.get(`${process.env.REACT_APP_URL}/api/papers`);
                 setPapers(response.data);
             } catch (err) {
                 setError(err.response?.data?.error || 'Failed to fetch papers');
@@ -23,7 +23,7 @@ const PaperVersions = () => {
 
     const handleShowVersions = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:4000/api/papers/${id}/versions`);
+            const response = await axios.get(`${process.env.REACT_APP_URL}/api/papers/${id}/versions`);
             // Store versions in state using paper ID as key
             setPaperVersions({
                 ...paperVersions,

@@ -26,7 +26,7 @@ const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4000/api/users/signup', formData);
+      await axios.post(`${process.env.REACT_APP_URL}/api/users/signup`, formData);
       toast.success('Added successfully!');
       setFormData(initialFormData);
       navigate('/admin'); 
@@ -36,7 +36,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="flex items-center justify-center bg-gray-100">
       <ToastContainer />
       <div className="max-w-md w-full bg-white p-8 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Add User</h2>

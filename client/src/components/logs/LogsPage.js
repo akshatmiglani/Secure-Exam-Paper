@@ -9,7 +9,7 @@ const LogsPage = () => {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/logs');
+        const response = await axios.get(`${process.env.REACT_APP_URL}/api/logs`);
         setLogs(response.data);
         setLoading(false);
       } catch (error) {
@@ -39,9 +39,9 @@ const LogsPage = () => {
           <tbody>
             {logs.map((log) => (
               <tr key={log._id}>
-                <td className="border px-4 py-2">{log.action}</td>
-                <td className="border px-4 py-2">{log.username}</td>
-                <td className="border px-4 py-2">{new Date(log.timestamp).toLocaleString()}</td>
+                <td className="border px-4 py-2 ">{log.action}</td>
+                <td className="border px-4 py-2 ">{log.username}</td>
+                <td className="border px-4 py-2 text-center">{new Date(log.timestamp).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

@@ -63,7 +63,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
         setPapers(response.data);
       } catch (error) {
         console.error(`Error fetching ${endpoint} papers:`, error);
-        setError(`Failed to fetch ${endpoint} papers`);
+        setError(`No available papers`);
       } finally {
         setLoading(false);
       }
@@ -96,11 +96,11 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p> {error}</p>;
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-md rounded my-8">
+    <div className="w-full mx-auto bg-white shadow-md rounded my-8">
       <h1 className="text-2xl font-bold bg-blue-500 text-white p-4">
         Paper's List
       </h1>

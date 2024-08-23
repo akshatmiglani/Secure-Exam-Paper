@@ -25,7 +25,7 @@ function UploadFile() {
 
         setUploading(true);
         try {
-            const response = await axios.post('http://localhost:4000/api/papers', formData, {
+            const response = await axios.post(`${process.env.REACT_APP_URL}/api/papers`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
