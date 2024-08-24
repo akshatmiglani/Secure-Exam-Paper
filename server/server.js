@@ -36,6 +36,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/papers', paperRoutes);
 app.use('/api/logs', logRoutes);
 
+app.get("/", (req, res)=>{
+  res.send("dfdanfksdfnadfjs")
+})
+
 // Server listen
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

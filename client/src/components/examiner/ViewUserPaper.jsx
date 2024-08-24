@@ -76,7 +76,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
     setFetchingVersions(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/papers/${paperId}/versions`
+        `${process.env.REACT_APP_URL}/api/papers/${paperId}/versions`
       );
       if (selectedPaperId === paperId) {
         setSelectedPaperId(null); // Close versions if already open
