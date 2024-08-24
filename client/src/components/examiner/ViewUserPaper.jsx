@@ -54,7 +54,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
 
         const token = localStorage.getItem('token'); 
 
-        const response = await axios.get(`http://localhost:4000/api/papers/user`, {
+        const response = await axios.get(`${process.env.REACT_APP_URL}/api/papers/user`, {
           headers: {
             Authorization: `Bearer ${token}` 
           }
