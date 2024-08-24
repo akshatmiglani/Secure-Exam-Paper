@@ -104,7 +104,7 @@ const ViewUserPaper = ({ endpoint, handleUpload }) => {
       <h1 className="text-2xl font-bold bg-blue-500 text-white p-4">
         Paper's List
       </h1>
-      <div className="overflow-x-auto">
+      <div className="overflow-y-auto h-96">
         <table className="min-w-full bg-white">
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
